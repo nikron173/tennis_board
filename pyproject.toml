@@ -7,8 +7,20 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+alembic = "^1.13.2"
+sqlalchemy = "^2.0.34"
+psycopg2 = "^2.9.9"
+psycopg2-binary = "^2.9.9"
+pyyaml = "^6.0.2"
+pytest = "^8.3.3"
+waitress = "^3.0.0"
+jinja2 = "^3.1.4"
+whitenoise = "^6.7.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+tennis_board-run = "tennis_board.main.run:main"

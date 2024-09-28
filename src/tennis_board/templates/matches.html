@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Matches</h2>
+    <table>
+        <tr>
+            <th>ID матча</th>
+            <th>Игрок 1</th>
+            <th>Игрок 2</th>
+            <th>Победитель</th>
+            <th>Счет</th>
+        </tr>
+        {% for match in matches %}
+            <tr>
+                <td>{{ match.match_uuid }}</td>
+                <td>{{ match.player_one.name }}</td>
+                <td>{{ match.player_two.name }}</td>
+                <td>{{ match.winner.name }}</td>
+                <td>{{ match.score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}

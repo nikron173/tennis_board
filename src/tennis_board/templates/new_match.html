@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3>Start new match</h3>
+    <form action="/new-match" method="post">
+        <label for="player_one">Игрок 1:</label>
+        <input type="text" id="player_one_name" name="player_one_name" required> <br>
+        <label for="player_two">Игрок 2:</label>
+        <input type="text" id="player_two_name" name="player_two_name" required> <br>
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3>Match-score</h3>
+    <table>
+        <tr>
+            <th>Игрок</th>
+            <th>Point</th>
+            <th>Game</th>
+        </tr>
+        <tr>
+            <td>{{ temporal_match.player_one.name }}</td>
+            <td>{{ temporal_match.player_one.point }}</td>
+            <td>{{ temporal_match.player_one.game }}</td>
+        </tr>
+        <tr></tr>
+            <td>{{ temporal_match.player_two.name }}</td>
+            <td>{{ temporal_match.player_two.point }}</td>
+            <td>{{ temporal_match.player_two.game }}</td>
+        </tr>
+    </table>
+    <form action="/match-score?uuid={{ temporal_match.uuid }}" method="post">
+        <input hidden="true" type="text" id="player_one" name="player_one" value="1" required>
+        <button type="submit">Игрок 1</button>
+    </form>
+    <form action="/match-score?uuid={{ temporal_match.uuid }}" method="post">
+        <input hidden="true" type="text" id="player_two" name="player_two" value="1" required>
+        <button type="submit">Игрок 2</button>
+    </form>
+{% endblock content %}

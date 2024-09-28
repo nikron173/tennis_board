@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Player</h2>
+    <div>
+        <h4>Info:</h4>
+        <p>ID: {{ player.player_id }}</p>
+        <p>Name: {{ player.name }}</p>
+        <ol>Matches:
+            {% for match in player.matches %}
+                <li>
+                    match_id: {{ match.uuid }} <br>
+                    Player_first_name: {{ match.player_one.name }} <br>
+                    Player_second_name: {{ match.player_two.name }} <br>
+                </li>
+            {% endfor %}
+        </ol>
+        <ol>Matches winner:
+            {% for match in player.matches_winner %}
+                <li>
+                    match_id: {{ match.uuid }} <br>
+                    Player_first_name: {{ match.player_one.name }} <br>
+                    Player_second_name: {{ match.player_two.name }} <br>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock content %}

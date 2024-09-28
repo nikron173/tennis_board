@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Players</h2>
+    <ol>
+        {% for player in players %}
+            <li>Player_name: '{{ player.name }}' with ID: {{ player.player_id }} </li>
+        {% endfor %}
+    </ol>
+    <form action="/players" method="post">
+        <label for="player_name">Player_name:</label>
+        <input type="text" id="player_name" name="player_name" required>
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock content %}
