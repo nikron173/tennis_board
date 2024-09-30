@@ -1,5 +1,5 @@
 .config.yaml
-.idea
+.idea/
 .vscode
 .pylintrc
 __pycache__/

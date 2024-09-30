@@ -65,6 +65,18 @@ def insert_data():
                 {"uuid": uuid4(), "p1": 1, "p2": 3, "w": 1},
                 {"uuid": uuid4(), "p1": 3, "p2": 4, "w": 4},
                 {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 5, "p2": 2, "w": 5},
+                {"uuid": uuid4(), "p1": 2, "p2": 3, "w": 3},
             ],
         )
         session.commit()

@@ -15,17 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
-    pass
-    # create_tables()
-    # insert_data()
-    # player_repo = PlayerRepository(session_factory)
-    # match_repo = MatchRepository(session_factory)
-    # print(match_repo.find_by_id(2).player_one)
-    # print(player_repo.find_by_id(3).matches)
-    # print(player_repo.find_by_id(3).matches_winner)
-
-
-if __name__ == "__main__":
     setup_logger()
     create_tables()
     insert_data()
@@ -51,3 +40,7 @@ if __name__ == "__main__":
 
     logger.info("Server starting on port 8001...")
     server.run()
+
+
+if __name__ == "__main__":
+    main()

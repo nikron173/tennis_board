@@ -14,9 +14,16 @@ class MatchService:
         self.match_repo = match_repo
         self.player_repo = player_repo
 
-    def find_all(self) -> List[MatchDto]:
-        matches = self.match_repo.find_all()
+    def find_all(self, page: int = 0) -> List[MatchDto]:
+        matches = self.match_repo.find_all(page)
         return matches_to_dto(matches)
+
+    def find_by_player_name(self, player_name: str, page: int = 0):
+        matches = self.match_repo.find_by_player_name(player_name, page)
+        return matches_to_dto(matches)
+
+    def count_pages(self, player_name: str = None) -> int:
+        return self.match_repo.count_pages(player_name)
 
     def save(self, match_create: MatchCreate) -> MatchDto:
         match = Match(

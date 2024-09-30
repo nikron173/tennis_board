@@ -1,7 +1,7 @@
 from typing import List
 from http import client
 import logging
-from tennis_board.dto.match import MatchCreate, MatchDto
+from tennis_board.dto.match import MatchDto
 from tennis_board.dto.temporal_match import TemporalMatch
 from tennis_board.models.match import Match
 from tennis_board.utils.helpers import parse_request_form

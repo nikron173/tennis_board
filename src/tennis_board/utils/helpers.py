@@ -16,6 +16,11 @@ def not_found(path: str) -> bytes:
     return template.render(title="error", message=f"Page '{path}' not found").encode()
 
 
+def bad_request(message: str) -> bytes:
+    template = templates.get_template("error.html")
+    return template.render(title="error", message=f"Bad request: {message}").encode()
+
+
 def generate_headers(message: bytes, headers: Optional[Dict] = None) -> List[Tuple]:
     add_header = []
     if headers:

@@ -1,28 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Matches</h2>
-    <form action="/matches" method="get">
-        <label for="Player_name">Player name</label>
-        <input type="text" name="filter_by_player_name" id="filter_by_player_name">
-        <button type="submit">Поиск</button>
-    </form>
     <table>
         <tr>
             <th>ID матча</th>
             <th>Игрок 1</th>
             <th>Игрок 2</th>
-            <th>Победитель</th>
             <th>Счет</th>
         </tr>
         {% for match in matches %}
             <tr>
-                <td>{{ match.match_uuid }}</td>
+                <td>{{ match.uuid }}</td>
                 <td>{{ match.player_one.name }}</td>
                 <td>{{ match.player_two.name }}</td>
-                <td>{{ match.winner.name }}</td>
-                <td>{{ match.score }}</td>
+                <td>{{ match.player_one.game }} : {{ match.player_two.game }}</td>
             </tr>
         {% endfor %}
     </table>
-    {% include 'components/pagination.html' %}
 {% endblock content %}

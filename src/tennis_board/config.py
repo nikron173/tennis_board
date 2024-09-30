@@ -1,3 +1,4 @@
+from os.path import exists
 from typing import Dict
 from pathlib import Path
 from yaml import load, FullLoader
@@ -16,6 +17,8 @@ class Settings:
 
     def _parse_config(self):
         path = Path(__file__).parent.parent.parent.joinpath("config.yaml").resolve()
+        if not exists(path):
+            raise FileNotFoundError("Configuration file config.yaml not found.")
         with open(path, encoding="utf8") as f:
             cfg = load(f, Loader=FullLoader)
             self._cfg = cfg

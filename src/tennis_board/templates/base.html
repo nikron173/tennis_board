@@ -1,5 +1,8 @@
 {% include 'header.html' %}
 <body>
-    {% block content %} {% endblock %}
+    {% include 'components/navbar.html' %}
+    {% block content %}
+        <h1>Welcome Tennis scoreboard application</h1>
+    {% endblock content %}
 </body>
 {% include 'footer.html' %}

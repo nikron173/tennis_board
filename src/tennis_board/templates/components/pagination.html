@@ -1,0 +1,5 @@
+<div>
+    {% for i in range(pages) %}
+    <a href="/{{ url_page }}?page={{ i+1 }}">{{i+1}}</a>
+    {% endfor %}
+</div>

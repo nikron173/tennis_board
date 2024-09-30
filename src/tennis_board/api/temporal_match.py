@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def get_temporal_matches(db: InMemoryDB) -> Tuple[bytes, str, List[Tuple]]:
     temporal_matches = list(db.values())
     body = (
-        templates.get_template("unfinished_matches")
+        templates.get_template("unfinished_matches.html")
         .render(title="Unfinished matches", matches=temporal_matches)
         .encode()
     )
@@ -34,18 +34,23 @@ def post_temporal_match(
     temporal_match = db.get(match_uuid)
     if not temporal_match:
         template = templates.get_template("error.html")
-        return (
-            template.render(message="Page not found", title="error").encode(),
-            f"{client.NOT_FOUND} NOT_FOUND",
-        )
+        body = template.render(message="Page not found", title="error").encode()
+        header = generate_headers(body)
+        return (body, f"{client.NOT_FOUND} NOT_FOUND", header)
     logger.info("Найден не сохраненный матч: %s", temporal_match.uuid)
     logger.info("Сырые данные: %s", data)
     data_with_form = parse_request_form(data)
     logger.info("Спарсенные данные с сырых данных: %s", data_with_form)
     if data_with_form.get("player_one"):
-        pass
-    elif data_with_form.get("player_two"):
-        return __game(
+        return _game(
+            db,
+            match_service,
+            temporal_match,
+            temporal_match.player_one,
+            temporal_match.player_two,
+        )
+    if data_with_form.get("player_two"):
+        return _game(
             db,
             match_service,
             temporal_match,
@@ -53,13 +58,12 @@ def post_temporal_match(
             temporal_match.player_one,
         )
     template = templates.get_template("match_score.html")
-    return (
-        template.render(temporal_match=temporal_match, title="match-score").encode(),
-        f"{client.OK} OK",
-    )
+    body = template.render(temporal_match=temporal_match, title="match-score").encode()
+    header = generate_headers(body)
+    return (body, f"{client.OK} OK", header)
 
 
-def __game(
+def _game(
     db: InMemoryDB,
     match_service: MatchService,
     match: TemporalMatch,
@@ -72,40 +76,39 @@ def __game(
         and comparative_player.tie_break
         and player.check_win_tie_break(comparative_player)
     ):
-        match.set_player_winner_id(match.player_one_id)
-        match_create = MatchCreate(
-            match.uuid,
-            match.player_one_id,
-            match.player_two_id,
-            match.player_winner_id,
-            f"{player.game} : {comparative_player.game}",
-        )
-        match_service.save(match_create)
-        del db[match.uuid]
-        logger.info("Удален матч с uuid '%s' c in_memory_db", match.uuid)
-        return b"Redirecting...", f"{client.FOUND} FOUND", {"Location": "/matches"}
+        return _win_player(db, match_service, match, player, comparative_player)
     elif player.check_win_game(comparative_player):
         player.add_game()
         player.point = 0
         comparative_player.point = 0
     if player.check_win(comparative_player):
-        match.set_player_winner_id(match.player_one_id)
-        match_create = MatchCreate(
-            match.uuid,
-            match.player_one_id,
-            match.player_two_id,
-            match.player_winner_id,
-            f"{player.game} : {comparative_player.game}",
-        )
-        match_service.save(match_create)
-        del db[match.uuid]
-        logger.info("Удален матч с uuid '%s' c in_memory_db", match.uuid)
-        return b"Redirecting...", f"{client.FOUND} FOUND", {"Location": "/matches"}
+        return _win_player(db, match_service, match, player, comparative_player)
     template = templates.get_template("match_score.html")
-    return (
-        template.render(temporal_match=match, title="match-score").encode(),
-        f"{client.OK} OK",
+    body = template.render(temporal_match=match, title="match-score").encode()
+    header = generate_headers(body)
+    return (body, f"{client.OK} OK", header)
+
+
+def _win_player(
+    db: InMemoryDB,
+    match_service: MatchService,
+    match: TemporalMatch,
+    player,
+    comparative_player,
+) -> Tuple[bytes, str, List[Tuple]]:
+    match.set_player_winner_id(match.player_one_id)
+    match_create = MatchCreate(
+        match.uuid,
+        match.player_one_id,
+        match.player_two_id,
+        match.player_winner_id,
+        f"{player.game} : {comparative_player.game}",
     )
+    match_service.save(match_create)
+    del db[match.uuid]
+    logger.info("Удален матч с uuid '%s' c in_memory_db", match.uuid)
+    header = generate_headers(b"Redirecting...", {"Location": "/matches"})
+    return b"Redirecting...", f"{client.FOUND} FOUND", header
 
 
 def get_temporal_match(
@@ -154,7 +157,7 @@ def create_temporal_match(
         header = generate_headers(body)
         return (body, f"{e.status_code} {e.status}", header)
     header = generate_headers(
-        b"Redirecting...", {"Location": f"/match-score?uuid{new_temporal_match.uuid}"}
+        b"Redirecting...", {"Location": f"/match-score?uuid={new_temporal_match.uuid}"}
     )
     return (
         b"Redirecting...",
